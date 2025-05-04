@@ -318,7 +318,7 @@ cosmos.add_plugin('chrisgrieser/nvim-spider', {
 
 cosmos.add_plugin('chrisgrieser/nvim-various-textobjs', {
   event = 'VeryLazy',
-  opts = { keymaps = { useDefaults = true } },
+  opts = { useDefaultKeymaps = true },
 })
 
 cosmos.add_plugin('rafcamlet/nvim-luapad')

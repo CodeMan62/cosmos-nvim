@@ -115,36 +115,6 @@ cosmos.add_plugin('CopilotC-Nvim/CopilotChat.nvim', {
 local local_avante_dir = os.getenv('HOME') .. '/workspace/projects/avante.nvim'
 local local_avante_dir_exists = vim.fn.isdirectory(local_avante_dir) == 1
 
-cosmos.add_plugin('ravitemer/mcphub.nvim', {
-  dev = true,
-  dir = os.getenv('HOME') .. '/workspace/projects/mcphub.nvim',
-  dependencies = {
-    'nvim-lua/plenary.nvim', -- Required for Job and HTTP requests
-  },
-  build = 'npm install -g mcp-hub@latest', -- Installs required mcp-hub npm module
-  config = function()
-    require('mcphub').setup({
-      -- Required options
-      port = 3001, -- Port for MCP Hub server
-      config = vim.fn.expand('~/mcpservers.json'), -- Absolute path to config file
-
-      -- Optional options
-      on_ready = function(hub)
-        -- Called when hub is ready
-      end,
-      on_error = function(err)
-        -- Called on errors
-      end,
-      shutdown_delay = 0, -- Wait 0ms before shutting down server after last client exits
-      log = {
-        level = vim.log.levels.WARN,
-        to_file = false,
-        file_path = nil,
-        prefix = 'MCPHub',
-      },
-    })
-  end,
-})
 
 cosmos.add_plugin('yetone/avante.nvim', {
   dev = local_avante_dir_exists,
@@ -190,16 +160,10 @@ Follow these steps for each interaction:
      b) Connect them to the current entities using relations
      b) Store facts about them as observations
         ]]
-      local hub = require('mcphub').get_hub_instance()
-      return system_prompt .. '\n\n' .. hub:get_active_servers_prompt()
+      --local hub = require('mcphub').get_hub_instance()
     end,
-    -- The custom_tools type supports both a list and a function that returns a list. Using a function here prevents requiring mcphub before it's loaded
-    custom_tools = function()
-      return {
-        require('mcphub.extensions.avante').mcp_tool(),
-      }
-    end,
-    provider = 'copilot_claude',
+    -- The custom_tools type supports both a list and a function that returns a list. Using a function here prevents requiring mcphtrueub before it's loaded
+    provider = 'copilot',
     ollama = {
       endpoint = 'http://10.0.0.249:11434',
       model = 'qwq:32b',
@@ -215,16 +179,16 @@ Follow these steps for each interaction:
     },
     auto_suggestions_provider = 'ollama',
     cursor_applying_provider = 'groq',
-    memory_summary_provider = 'openai-gpt-4o-mini',
+    memory_summary_provider = 'copilot',
     -- highlights = {
     --     diff = {
     --         current = "DiffText",
     --         incoming = "DiffAdd",
     --     },
     -- },
-    -- copilot = {
-    --   model = 'claude-3.5-sonnet',
-    -- },
+     copilot = {
+       model = 'claude-3.5-sonnet',
+     },
     gemini = {
       model = 'gemini-2.0-flash',
       -- model = 'gemini-2.0-flash-exp',
